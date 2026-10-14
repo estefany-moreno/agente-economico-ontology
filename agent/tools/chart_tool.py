@@ -17,7 +17,7 @@ from pathlib import Path
 import plotly.graph_objects as go
 from langchain_core.tools import tool
 
-from agent.tools.series_cache import INICIO_DEFAULT, obtener_serie, recortar
+from agent.tools.series_cache import INICIO_DEFAULT, obtener_serie, recortar, transformar
 
 # Salida de figuras (HTML + PNG) dentro del repo
 OUT_DIR = Path(__file__).resolve().parents[1] / "outputs"
@@ -31,7 +31,14 @@ COLOR_TEXTO = "#222222"
 FUENTE_FAMILIA = "Arial, Helvetica, sans-serif"
 
 
-def _fig(fechas: list[str], valores: list[float], titulo: str, fuente: str, tipo: str):
+def _fig(
+    fechas: list[str],
+    valores: list[float],
+    titulo: str,
+    fuente: str,
+    tipo: str,
+    eje_y: str = "Valor",
+):
     """Construye la figura Plotly (linea|barras) con look ggplot: panel gris y textos grandes en negrita."""
     fig = go.Figure()
     if tipo == "barras":
@@ -84,7 +91,7 @@ def _fig(fechas: list[str], valores: list[float], titulo: str, fuente: str, tipo
             tickformat="%d/%m/%Y",
             **eje_comun,
         ),
-        yaxis=dict(title=dict(text="<b>Valor</b>"), **eje_comun),
+        yaxis=dict(title=dict(text=f"<b>{eje_y}</b>"), **eje_comun),
         # Pie de pagina con la fuente del dato
         annotations=[
             dict(
@@ -112,17 +119,20 @@ def figura_serie(
     fecha_ini: str = INICIO_DEFAULT,
     fecha_fin: str = "",
     tipo: str = "linea",
+    transformacion: str = "nivel",
 ) -> go.Figure:
     """Figura Plotly con el estilo fijo, leyendo la serie de la cache (la usa tambien la app Streamlit)."""
     if tipo not in ("linea", "barras"):
         raise ValueError("tipo debe ser 'linea' o 'barras'")
 
-    df = recortar(obtener_serie(fuente, serie_id), fecha_ini, fecha_fin).dropna(subset=["valor"])
+    serie = transformar(obtener_serie(fuente, serie_id), transformacion)
+    df = recortar(serie, fecha_ini, fecha_fin).dropna(subset=["valor"])
     if df.empty:
         raise ValueError(f"Sin observaciones para {fuente} {serie_id} en el rango pedido")
     fechas = [d.strftime("%Y-%m-%d") for d in df["fecha"]]
     valores = [float(v) for v in df["valor"]]
-    return _fig(fechas, valores, titulo or f"{fuente} {serie_id}", f"{fuente}, serie {serie_id}", tipo)
+    eje_y = "Variación anual (%)" if transformacion == "var_anual" else "Valor"
+    return _fig(fechas, valores, titulo or f"{fuente} {serie_id}", f"{fuente}, serie {serie_id}", tipo, eje_y)
 
 
 def graficar_serie(
@@ -132,9 +142,10 @@ def graficar_serie(
     fecha_ini: str = INICIO_DEFAULT,
     fecha_fin: str = "",
     tipo: str = "linea",
+    transformacion: str = "nivel",
 ) -> dict:
     """Grafica una serie de la cache y guarda HTML (lo usan generar_grafica y consultar_*)."""
-    fig = figura_serie(fuente, serie_id, titulo, fecha_ini, fecha_fin, tipo)
+    fig = figura_serie(fuente, serie_id, titulo, fecha_ini, fecha_fin, tipo, transformacion)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -158,6 +169,7 @@ def generar_grafica(
     fecha_ini: str = INICIO_DEFAULT,
     fecha_fin: str = "",
     tipo: str = "linea",
+    transformacion: str = "nivel",
 ) -> dict:
-    """Grafica (linea o barras) de una serie INEGI/Banxico ya identificada, dada su fuente y serie_id; guarda HTML. No requiere pasar los datos."""
-    return graficar_serie(fuente, serie_id, titulo, fecha_ini, fecha_fin, tipo)
+    """Grafica (linea o barras) de una serie INEGI/Banxico ya identificada, dada su fuente y serie_id; guarda HTML. No requiere pasar los datos. transformacion="var_anual" grafica la variacion % anual."""
+    return graficar_serie(fuente, serie_id, titulo, fecha_ini, fecha_fin, tipo, transformacion)

@@ -108,3 +108,40 @@ def test_cache_descarga_una_vez_y_respeta_ttl(monkeypatch, serie_mensual):
 def test_fuente_desconocida():
     with pytest.raises(ValueError):
         obtener_serie("FuenteInexistente", "1")
+
+
+# --- Transformaciones ---------------------------------------------------------
+def test_var_anual_mensual(serie_mensual):
+    from agent.tools.series_cache import transformar
+
+    df = transformar(serie_mensual, "var_anual")
+    # Los primeros 12 meses no tienen base de un año antes
+    assert len(df) == 13
+    assert df["fecha"].iloc[0] == pd.Timestamp("2025-01-01")
+    assert df["valor"].iloc[-1] == pytest.approx((124 / 112 - 1) * 100)
+
+
+def test_var_anual_diaria_tolera_dias_inhabiles():
+    from agent.tools.series_cache import transformar
+
+    # Serie de dias habiles: el 2025-01-04 (sabado) no existe; se usa el viernes 3
+    fechas = pd.bdate_range("2024-01-01", "2025-01-06")
+    df = pd.DataFrame({"fecha": fechas, "valor": [100.0] * (len(fechas) - 1) + [110.0]})
+    r = transformar(df, "var_anual")
+    assert r["valor"].iloc[-1] == pytest.approx(10.0)
+
+
+def test_transformacion_invalida(serie_mensual):
+    from agent.tools.series_cache import transformar
+
+    with pytest.raises(ValueError):
+        transformar(serie_mensual, "logaritmo")
+
+
+def test_resumir_en_puntos_porcentuales():
+    df = pd.DataFrame({"fecha": pd.date_range("2025-01-01", periods=13, freq="MS"),
+                       "valor": [4.0] * 12 + [3.5]})
+    r = resumir(df, en_pp=True)
+    assert r["cambio_pp_vs_previo"] == -0.5
+    assert r["cambio_pp_anual"] == -0.5
+    assert "var_pct_anual" not in r

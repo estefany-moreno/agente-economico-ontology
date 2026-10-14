@@ -23,6 +23,7 @@ from agent.tools.series_cache import (
     recortar,
     registrar_descargador,
     resumir,
+    transformar,
 )
 
 BASE_URL = "https://www.banxico.org.mx/SieAPIRest/service/v1"
@@ -60,13 +61,28 @@ def consultar_banxico(
     fecha_ini: str = INICIO_DEFAULT,
     fecha_fin: str = "",
     n_ultimas: int = N_ULTIMAS_DEFAULT,
+    transformacion: str = "nivel",
     graficar: bool = False,
     titulo: str = "",
 ) -> dict:
-    """Resumen de una serie del SIE de Banxico dado su ID: ultimo valor, variaciones, max/min y ultimas n_ultimas observaciones. graficar=True ademas guarda la grafica (titulo opcional)."""
-    df = recortar(obtener_serie("Banxico", serie_id), fecha_ini, fecha_fin)
-    out = {"fuente": "Banxico", "serie_id": serie_id, **resumir(df, n_ultimas)}
+    """Resumen de una serie del SIE de Banxico dado su ID: ultimo valor, variaciones, max/min y ultimas n_ultimas observaciones. transformacion="var_anual" usa la variacion % anual (p. ej. la inflacion a partir del INPC). graficar=True ademas guarda la grafica (titulo opcional)."""
+    df = recortar(transformar(obtener_serie("Banxico", serie_id), transformacion), fecha_ini, fecha_fin)
+    out = {
+        "fuente": "Banxico",
+        "serie_id": serie_id,
+        "transformacion": transformacion,
+        **resumir(df, n_ultimas, en_pp=transformacion == "var_anual"),
+    }
+    if transformacion == "var_anual":
+        # Unidades explicitas: evita que el LLM confunda % con puntos porcentuales
+        out["unidades"] = (
+            "valores = variacion % anual; cambio_pp_vs_previo = diferencia en puntos "
+            "porcentuales contra el periodo anterior; cambio_pp_anual = diferencia en "
+            "puntos porcentuales contra hace un año"
+        )
     if graficar and out["n_obs"]:
         # Misma llamada: evita un turno extra del LLM solo para generar_grafica
-        out["grafica_html"] = graficar_serie("Banxico", serie_id, titulo, fecha_ini, fecha_fin)["html_path"]
+        out["grafica_generada"] = graficar_serie(
+            "Banxico", serie_id, titulo, fecha_ini, fecha_fin, transformacion=transformacion
+        )["html_path"]
     return out

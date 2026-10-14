@@ -24,6 +24,10 @@ secondaryBackgroundColor = "#1E293B"
 textColor = "#E2E8F0"
 borderColor = "#334155"
 
+[client]
+# Sin boton "Deploy" ni opciones de desarrollador en la barra superior
+toolbarMode = "minimal"
+
 [server]
 # No preguntar por email ni enviar estadisticas de uso
 headless = true

@@ -52,7 +52,8 @@ buscar_indicador_relevante solo si ninguno de esos indicadores sirve.
 serie_id=claveAPI. Si claveAPI esta vacia, dilo y no inventes un ID.
 3. Las tools de datos devuelven un resumen ya calculado (ultimo valor, variaciones, \
 max/min, ultimas observaciones). Citalo tal cual; no inventes ni recalcules cifras. \
-Respeta unidad y frecuencia.
+Respeta unidad y frecuencia. La inflacion es la variacion anual del INPC: consultala \
+con transformacion="var_anual" (el nivel del indice no es la inflacion).
 4. Si una visualizacion aporta (tendencias, series), pasa graficar=True (y un titulo) \
 a consultar_inegi/consultar_banxico: obtiene datos y grafica en la misma llamada. \
 Usa generar_grafica solo para regraficar una serie ya consultada con otro rango o tipo.
@@ -62,6 +63,8 @@ Usa generar_grafica solo para regraficar una serie ya consultada con otro rango 
 fecha_fin (usa la fecha de hoy del contexto para inferir el año). Cita el resumen \
 agregado tal cual.
 7. Cita siempre la fuente. Nunca pidas ni expongas tokens ni credenciales.
+8. Se conciso: cifras clave en viñetas, tablas de maximo 6 filas. No incluyas \
+rutas de archivos ni enlaces a graficas: la interfaz ya las muestra.
 """
 
 

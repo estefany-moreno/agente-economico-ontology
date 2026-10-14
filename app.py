@@ -39,7 +39,7 @@ from agent.tools.series_cache import obtener_serie
 # Configuracion general de la pagina (debe ser la primera llamada a st.*)
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Agente Economico MX",
+    page_title="Agente Económico MX",
     page_icon="📈",
     layout="wide",
 )
@@ -55,41 +55,41 @@ TURNOS_DE_CONTEXTO = 2
 #   delta   = "anual"     -> cambio vs hace un año
 #   delta_color "inverse" -> subir se pinta en rojo (p. ej. inflacion)
 PANEL = [
-    {"label": "Inflacion anual (INPC)", "fuente": "INEGI", "serie_id": "910392",
+    {"label": "Inflación anual (INPC)", "fuente": "INEGI", "serie_id": "910392",
      "calculo": "var_anual", "delta": "previo", "fmt": "{:.2f}%", "delta_fmt": "{:+.2f} pp",
-     "delta_color": "inverse", "delta_desc": "vs mes anterior"},
+     "delta_color": "inverse", "delta_desc": "vs. mes anterior"},
     {"label": "Tasa objetivo Banxico", "fuente": "Banxico", "serie_id": "SF61745",
      "calculo": "nivel", "delta": "anual", "fmt": "{:.2f}%", "delta_fmt": "{:+.2f} pp",
-     "delta_color": "inverse", "delta_desc": "vs hace un año"},
+     "delta_color": "inverse", "delta_desc": "vs. hace un año"},
     {"label": "Tipo de cambio FIX", "fuente": "Banxico", "serie_id": "SF43718",
      "calculo": "nivel", "delta": "previo", "fmt": "${:.4f}", "delta_fmt": "{:+.4f}",
-     "delta_color": "inverse", "delta_desc": "vs dia anterior"},
-    {"label": "TIIE 28 dias", "fuente": "Banxico", "serie_id": "SF43783",
+     "delta_color": "inverse", "delta_desc": "vs. día anterior"},
+    {"label": "TIIE a 28 días", "fuente": "Banxico", "serie_id": "SF43783",
      "calculo": "nivel", "delta": "anual", "fmt": "{:.2f}%", "delta_fmt": "{:+.2f} pp",
-     "delta_color": "inverse", "delta_desc": "vs hace un año"},
+     "delta_color": "inverse", "delta_desc": "vs. hace un año"},
     {"label": "IGAE (var. anual)", "fuente": "INEGI", "serie_id": "737219",
      "calculo": "var_anual", "delta": "previo", "fmt": "{:.2f}%", "delta_fmt": "{:+.2f} pp",
-     "delta_color": "normal", "delta_desc": "vs mes anterior"},
-    {"label": "Tasa de desocupacion", "fuente": "INEGI", "serie_id": "444884",
+     "delta_color": "normal", "delta_desc": "vs. mes anterior"},
+    {"label": "Tasa de desocupación", "fuente": "INEGI", "serie_id": "444884",
      "calculo": "nivel", "delta": "anual", "fmt": "{:.2f}%", "delta_fmt": "{:+.2f} pp",
-     "delta_color": "inverse", "delta_desc": "vs hace un año"},
+     "delta_color": "inverse", "delta_desc": "vs. hace un año"},
 ]
 
 # Etiquetas amigables para mostrar el progreso de cada tool en el chat
 NOMBRES_TOOLS = {
-    "buscar_indicador_relevante": "🧭 Buscando indicadores en la ontologia",
+    "buscar_indicador_relevante": "🧭 Buscando indicadores en la ontología",
     "consultar_inegi": "📊 Consultando INEGI",
     "consultar_banxico": "🏦 Consultando Banxico",
     "consultar_noticias": "📰 Leyendo noticias y sentimiento",
-    "generar_grafica": "📈 Generando grafica",
+    "generar_grafica": "📈 Generando gráfica",
 }
 
 PREGUNTAS_EJEMPLO = [
-    "¿Como va la inflacion? Grafica la serie.",
-    "¿Como ha evolucionado el tipo de cambio en el ultimo año?",
-    "Compara la tasa objetivo de Banxico con la TIIE a 28 dias.",
-    "¿Como va la produccion industrial?",
-    "¿Cual es el tono de las noticias economicas de esta semana?",
+    "¿Cómo va la inflación? Grafica la serie.",
+    "¿Cómo ha evolucionado el tipo de cambio en el último año?",
+    "Compara la tasa objetivo de Banxico con la TIIE a 28 días.",
+    "¿Cómo va la producción industrial?",
+    "¿Cuál fue el tono de las noticias económicas en abril?",
 ]
 
 # ---------------------------------------------------------------------------
@@ -116,8 +116,8 @@ st.markdown(
     }
     </style>
     <div class="hero">
-        <h1>📈 Agente Economico de Mexico</h1>
-        <p>Pregunta en lenguaje natural: el agente ubica el indicador en la ontologia
+        <h1>📈 Agente Económico de México</h1>
+        <p>Pregunta en lenguaje natural: el agente ubica el indicador en la ontología
         (OntoRank), consulta INEGI / Banxico / noticias y responde citando la fuente.</p>
     </div>
     """,
@@ -195,7 +195,7 @@ def mostrar_panel() -> None:
                 chart_data=t["spark"],
                 chart_type="area",
                 border=True,
-                help=f"Fuente: {t['fuente']}, serie {t['serie_id']}. Ultimo dato: {t['fecha']}",
+                help=f"Fuente: {t['fuente']}, serie {t['serie_id']}. Último dato: {t['fecha']}",
             )
 
 
@@ -208,7 +208,7 @@ def mostrar_grafica(spec: dict, key: str) -> None:
     try:
         fig = figura_serie(**spec)
     except Exception as exc:
-        st.warning(f"No se pudo dibujar la grafica: {exc}")
+        st.warning(f"No se pudo dibujar la gráfica: {exc}")
         return
     # El estilo base fija 900 px de ancho; aqui se deja que ocupe el contenedor
     fig.update_layout(width=None, autosize=True)
@@ -224,7 +224,7 @@ def _spec_grafica(nombre_tool: str, args: dict) -> dict | None:
         return None
     fuente = args.get("fuente") or ("INEGI" if nombre_tool == "consultar_inegi" else "Banxico")
     spec = {"fuente": fuente, "serie_id": args["serie_id"], "titulo": args.get("titulo", "")}
-    for campo in ("fecha_ini", "fecha_fin", "tipo"):
+    for campo in ("fecha_ini", "fecha_fin", "tipo", "transformacion"):
         if args.get(campo):
             spec[campo] = args[campo]
     return spec
@@ -245,7 +245,7 @@ def responder(pregunta: str, historial: list[dict]) -> dict:
     modelos_usados: list[str] = []  # puede cambiar al respaldo a media respuesta
     pendientes: dict[str, dict] = {}  # tool_call_id -> receta de grafica
 
-    with st.status("Analizando tu pregunta...", expanded=True) as status:
+    with st.status("Analizando tu pregunta…", expanded=True) as status:
         try:
             # stream_mode="updates": un evento por nodo del grafo (modelo, tools, middleware)
             for evento in obtener_agente().stream(entrada, stream_mode="updates"):
@@ -268,7 +268,7 @@ def responder(pregunta: str, historial: list[dict]) -> dict:
                                 respuesta = msg.text  # .text une bloques (Gemini devuelve listas)
                         elif isinstance(msg, ToolMessage):
                             if msg.status == "error":
-                                st.write(f"⚠️ {msg.name} fallo: {str(msg.content)[:150]}")
+                                st.write(f"⚠️ {msg.name} falló: {str(msg.content)[:150]}")
                             elif msg.tool_call_id in pendientes:
                                 # Solo se grafica si la tool termino bien
                                 graficas.append(pendientes.pop(msg.tool_call_id))
@@ -278,11 +278,11 @@ def responder(pregunta: str, historial: list[dict]) -> dict:
                 expanded=False,
             )
         except Exception as exc:
-            status.update(label="Ocurrio un error", state="error")
+            status.update(label="Ocurrió un error", state="error")
             texto = str(exc)
             if es_limite_de_cuota(exc):
-                respuesta = ("⏳ Se alcanzo el limite del proveedor del LLM (tier gratuito). "
-                             "Espera un minuto y vuelve a intentar, o cambia LLM_PROVIDER en .env.")
+                respuesta = ("⏳ Se alcanzó el límite del proveedor del LLM (tier gratuito). "
+                             "Espera un minuto y vuelve a intentarlo, o cambia LLM_PROVIDER en .env.")
             else:
                 respuesta = f"❌ Error al consultar el agente: {texto[:300]}"
 
@@ -309,13 +309,13 @@ with st.sidebar:
             st.session_state.pregunta_pendiente = ejemplo
 
     st.divider()
-    if st.button("🗑️ Nueva conversacion", width="stretch"):
+    if st.button("🗑️ Nueva conversación", width="stretch"):
         st.session_state.historial = []
         st.rerun()
     if st.button("🔄 Actualizar indicadores", width="stretch"):
         cargar_panel.clear()  # borra la cache del panel y vuelve a consultar
         st.rerun()
-    st.caption("Fuentes: INEGI (BIE/BISE), Banxico (SIE) y noticias con sentimiento.")
+    st.caption("Fuentes: INEGI (BIE/BISE), Banxico (SIE) y noticias con análisis de sentimiento.")
 
 
 # ---------------------------------------------------------------------------
@@ -337,7 +337,7 @@ for i, m in enumerate(st.session_state.historial):
             mostrar_grafica(spec, key=f"g_{i}_{j}")
 
 # Pregunta nueva: del input de chat o de un boton de ejemplo
-pregunta = st.chat_input("Pregunta sobre inflacion, tipo de cambio, empleo, tasas...")
+pregunta = st.chat_input("Pregunta sobre inflación, tipo de cambio, empleo, tasas…")
 pregunta = pregunta or st.session_state.pop("pregunta_pendiente", None)
 
 if pregunta:

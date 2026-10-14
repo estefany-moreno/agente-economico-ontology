@@ -58,6 +58,29 @@ def recortar(df: pd.DataFrame, fecha_ini: str, fecha_fin: str) -> pd.DataFrame:
     return df.loc[(df["fecha"] >= ini) & (df["fecha"] <= fin)].reset_index(drop=True)
 
 
+TRANSFORMACIONES = ("nivel", "var_anual")
+
+
+def transformar(df: pd.DataFrame, transformacion: str = "nivel") -> pd.DataFrame:
+    """
+    "nivel": la serie tal cual.
+    "var_anual": variacion % contra el mismo periodo del año anterior, p. ej. la
+    inflacion a partir del INPC (la inflacion es esta variacion, no el nivel del
+    indice). Se calcula sobre la historia completa, antes de recortar fechas.
+    """
+    if transformacion == "nivel" or df.empty:
+        return df
+    if transformacion != "var_anual":
+        raise ValueError(f"transformacion debe ser una de {TRANSFORMACIONES}")
+    df = df.dropna(subset=["valor"]).sort_values("fecha")
+    # Cada observacion se empareja con la de un año antes (tolerancia de 7 dias
+    # para series diarias con fines de semana o dias inhabiles)
+    base = df.assign(fecha=df["fecha"] + pd.DateOffset(years=1)).rename(columns={"valor": "base"})
+    m = pd.merge_asof(df, base, on="fecha", direction="backward", tolerance=pd.Timedelta(days=7))
+    m["valor"] = (m["valor"] / m["base"] - 1) * 100
+    return m[["fecha", "valor"]].dropna().reset_index(drop=True)
+
+
 def _num(v) -> float | None:
     return None if pd.isna(v) else round(float(v), 4)
 
@@ -68,8 +91,14 @@ def _pct(actual, previo) -> float | None:
     return round((float(actual) / float(previo) - 1) * 100, 2)
 
 
-def resumir(df: pd.DataFrame, n_ultimas: int = N_ULTIMAS_DEFAULT) -> dict:
-    """Estadisticos precalculados para que el LLM no reciba ni recalcule la serie."""
+def resumir(df: pd.DataFrame, n_ultimas: int = N_ULTIMAS_DEFAULT, en_pp: bool = False) -> dict:
+    """
+    Estadisticos precalculados para que el LLM no reciba ni recalcule la serie.
+    en_pp=True (series que ya son tasas en %): los cambios se reportan como
+    diferencia en puntos porcentuales, no como variacion % de una tasa.
+    """
+    cambio = (lambda a, b: _num(a - b)) if en_pp else _pct
+    sufijo = "cambio_pp" if en_pp else "var_pct"
     df = df.dropna(subset=["valor"])
     if df.empty:
         return {"n_obs": 0}
@@ -86,7 +115,7 @@ def resumir(df: pd.DataFrame, n_ultimas: int = N_ULTIMAS_DEFAULT) -> dict:
     if len(df) > 1:
         prev = df.iloc[-2]
         resumen["valor_previo"] = _num(prev["valor"])
-        resumen["var_pct_vs_previo"] = _pct(ult["valor"], prev["valor"])
+        resumen[f"{sufijo}_vs_previo"] = cambio(ult["valor"], prev["valor"])
 
     # Variacion anual: ultima observacion con fecha <= un año antes
     hace_un_anio = df.loc[df["fecha"] <= ult["fecha"] - pd.DateOffset(years=1)]
@@ -94,7 +123,7 @@ def resumir(df: pd.DataFrame, n_ultimas: int = N_ULTIMAS_DEFAULT) -> dict:
         base = hace_un_anio.iloc[-1]
         resumen["valor_hace_un_anio"] = _num(base["valor"])
         resumen["fecha_hace_un_anio"] = base["fecha"].strftime("%Y-%m-%d")
-        resumen["var_pct_anual"] = _pct(ult["valor"], base["valor"])
+        resumen[f"{sufijo}_anual"] = cambio(ult["valor"], base["valor"])
 
     imax, imin = df["valor"].idxmax(), df["valor"].idxmin()
     resumen["maximo"] = {"fecha": df.at[imax, "fecha"].strftime("%Y-%m-%d"), "valor": _num(df.at[imax, "valor"])}
