@@ -1,0 +1,10 @@
+# Evita meter secretos o basura en el contexto de build (complementa seccion 6/8).
+.env
+secrets/
+.git
+.github
+**/__pycache__
+**/*.pyc
+agent/outputs/
+*.md
+.cursor

@@ -1,0 +1,32 @@
+# Tema visual de la app Streamlit (app.py).
+# Base clara para que combine con el estilo fijo de las graficas Plotly
+# (panel gris tipo ggplot) y acentos en verde azulado / indigo.
+
+[theme]
+base = "light"
+primaryColor = "#0F766E"             # verde azulado: botones, enlaces, foco
+backgroundColor = "#F7F8FB"          # fondo general casi blanco
+secondaryBackgroundColor = "#E9EEF5" # sidebar, tarjetas, chat input
+textColor = "#1F2937"
+borderColor = "#D6DDE8"
+showWidgetBorder = true
+baseRadius = "0.75rem"               # esquinas redondeadas en tarjetas/inputs
+# Fuentes de Google Fonts: Inter para texto, Poppins para titulos
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap, sans-serif"
+headingFont = "Poppins:https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap, sans-serif"
+metricValueFontSize = "1.9rem"
+metricValueFontWeight = 700
+chartCategoricalColors = ["#0F766E", "#4F46E5", "#F59E0B", "#DC2626", "#0EA5E9", "#7C3AED"]
+
+[theme.sidebar]
+backgroundColor = "#0F172A"          # sidebar oscuro para contraste
+secondaryBackgroundColor = "#1E293B"
+textColor = "#E2E8F0"
+borderColor = "#334155"
+
+[server]
+# No preguntar por email ni enviar estadisticas de uso
+headless = true
+
+[browser]
+gatherUsageStats = false

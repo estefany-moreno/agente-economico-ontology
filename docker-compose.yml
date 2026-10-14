@@ -1,0 +1,34 @@
+# Orquestacion local del contenedor (plan seccion 8).
+# Secretos: env_file .env + volumen ro de credentials.json (nunca en la imagen).
+# Ambos servicios usan la misma imagen (el modelo de embeddings ya viene dentro).
+
+x-comun: &comun
+  build: .
+  image: agente-economico:latest
+  env_file: .env
+  volumes:
+    # Cuenta de servicio de Google Sheets (solo lectura)
+    - ./secrets/credentials.json:/app/secrets/credentials.json:ro
+    # Ontologia editable en el host sin rebuild
+    - ./ontology:/app/ontology:ro
+
+services:
+  # CLI: docker compose run --rm agente-economico "como va la inflacion?"
+  agente-economico:
+    <<: *comun
+    stdin_open: true
+    tty: true
+
+  # Interfaz web: docker compose up ui  ->  http://localhost:8501
+  ui:
+    <<: *comun
+    command:
+      - streamlit
+      - run
+      - app.py
+      - --server.address=0.0.0.0
+      - --server.port=8501
+    ports:
+      # Solo accesible desde esta computadora (127.0.0.1)
+      - "127.0.0.1:8501:8501"
+    restart: unless-stopped

@@ -1,0 +1,21 @@
+# Hooks que corren antes de cada commit (plan seccion 6: red de seguridad
+# contra secretos). Instalar una vez con:  pre-commit install
+repos:
+  # gitleaks: bloquea el commit si detecta tokens, API keys o llaves privadas
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+
+  # Chequeos basicos de higiene del repo
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: detect-private-key       # p. ej. la llave de credentials.json
+      - id: check-added-large-files  # evita subir modelos/datos pesados por error
+        args: ["--maxkb=1024"]
+      - id: check-yaml
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: ["--markdown-linebreak-ext=md"]  # respeta saltos de linea de Markdown

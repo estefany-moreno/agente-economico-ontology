@@ -1,0 +1,40 @@
+# Secretos y credenciales (plan seccion 6) — no versionar nunca
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+
+# JSON locales (p. ej. credentials); permitir JSON de ontologia si los hubiera
+*.json
+!ontology/*.json
+
+# Cache de embeddings de OntoRank: se regenera sola al arrancar (~1 s)
+ontology/.ontorank_embeddings.npz
+ontology/.ontorank_embeddings_meta.json
+
+# Graficas generadas por el agente
+agent/outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Modelo de Hugging Face (si se descarga dentro del repo)
+.hf_cache/
+
+# Streamlit: secrets.toml local (config.toml si se versiona)
+.streamlit/secrets.toml
+
+# Sistema / editores
+.DS_Store
+.idea/
+.vscode/
+.cursor/
+
+# Documentos de trabajo locales (no se publican)
+plan_de_trabajo.md

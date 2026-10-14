@@ -1,0 +1,33 @@
+# Dependencias del agente economico (plan secciones 7-8).
+# Versiones alineadas con el environment conda de desarrollo.
+
+# Orquestacion LangChain / LangGraph
+langchain==1.4.5
+langchain-core==1.6.10
+langgraph==1.2.15
+langchain-groq==1.1.3
+langchain-google-genai==4.4.2
+langchain-openai==1.7.1
+
+# Config y datos
+python-dotenv==1.2.4
+requests==2.34.2
+pandas==3.0.6
+numpy==2.5.4
+
+# Ontologia + OntoRank
+rdflib==7.6.0
+networkx==3.7
+sentence-transformers==6.1.0
+
+# Noticias (Google Sheets, cuenta de servicio)
+gspread==6.2.1
+google-auth==2.62.0
+
+# Graficas (HTML Plotly; kaleido opcional si se reactiva PNG)
+plotly==7.1.0
+
+# Interfaz web (app.py)
+streamlit==1.65.0
+
+# torch: en Docker se instala la version solo-CPU antes de este archivo (ver Dockerfile)

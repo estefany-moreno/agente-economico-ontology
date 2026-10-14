@@ -1,0 +1,667 @@
+@prefix ae: <http://agente-economico.local/ontologia#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ae:Bloque a rdfs:Class ;
+    rdfs:label "Bloque tematico"@es .
+
+ae:ConceptoNoticias a rdfs:Class ;
+    rdfs:label "Concepto de noticias economicas"@es .
+
+ae:Fuente a rdfs:Class ;
+    rdfs:label "Fuente de datos"@es .
+
+ae:Indicador a rdfs:Class ;
+    rdfs:label "Indicador economico"@es .
+
+ae:Adelantado_SIC a ae:Indicador ;
+    rdfs:label "Indicador adelantado del SIC"@es ;
+    ae:claveAPI "436141"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueFinancierosExternos ;
+    ae:relacionadoCon ae:Coincidente_SIC ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:Credito_real_sector_privado a ae:Indicador ;
+    rdfs:label "Credito real al sector privado — cartera total"@es ;
+    ae:claveAPI "SF235704"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueDineroCredito ;
+    ae:relacionadoCon ae:Credito_consumo,
+        ae:Credito_empresas_actividad_empresarial ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:EMEC_comercio_por_mayor a ae:Indicador ;
+    rdfs:label "Personal ocupado en comercio al por mayor (EMEC)"@es ;
+    ae:claveAPI "718480"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:EMEC_comercio_por_menor a ae:Indicador ;
+    rdfs:label "Personal ocupado en comercio al por menor (EMEC)"@es ;
+    ae:claveAPI "718482"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:EMS_personal_servicios_priv_no_fin a ae:Indicador ;
+    rdfs:label "Personal ocupado en servicios privados no financieros (EMS)"@es ;
+    ae:claveAPI "715744"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:ENEC_valor_produccion_sector_23 a ae:Indicador ;
+    rdfs:label "Valor de produccion del sector construccion — sector 23 (ENEC)"@es ;
+    ae:claveAPI "720326"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueVivienda ;
+    ae:relacionadoCon ae:ENEC_valor_produccion_subsector_236,
+        ae:ENEC_valor_produccion_subsector_237 ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:Exportaciones_manufactureras a ae:Indicador ;
+    rdfs:label "Exportaciones manufactureras"@es ;
+    ae:claveAPI "87520"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueFinancierosExternos ;
+    ae:relacionadoCon ae:Importaciones_bienes_capital ;
+    ae:unidad "millones de dolares"^^xsd:string .
+
+ae:Horas_manufacturas a ae:Indicador ;
+    rdfs:label "Horas trabajadas en manufacturas (EMIM)"@es ;
+    ae:claveAPI "702503"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:relacionadoCon ae:EMIM_remuneraciones_medias_reales ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:IGAE_Total a ae:Indicador ;
+    rdfs:label "Indicador Global de Actividad Economica — total"@es ;
+    ae:claveAPI "737219"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueProduccion ;
+    ae:relacionadoCon ae:Coincidente_SIC,
+        ae:IGAE_Primarias,
+        ae:IGAE_Secundarias,
+        ae:IGAE_Terciarias ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:IGPOSE a ae:Indicador ;
+    rdfs:label "Indice global de personal ocupado en establecimientos (IGPOSE)"@es ;
+    ae:claveAPI "702106"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:relacionadoCon ae:IGRESE ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:INPP_agricultura_forestal_pesca a ae:Indicador ;
+    rdfs:label "INPP — agricultura, silvicultura y pesca"@es ;
+    ae:claveAPI "910498"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloquePrecios ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:INPP_con_petroleo_servicios a ae:Indicador ;
+    rdfs:label "INPP — con petroleo y servicios"@es ;
+    ae:claveAPI "910492"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloquePrecios ;
+    ae:relacionadoCon ae:INPP_sin_petroleo_servicios ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:INPP_energia_electrica_agua_gas a ae:Indicador ;
+    rdfs:label "INPP — energia electrica, agua y gas"@es ;
+    ae:claveAPI "910501"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloquePrecios ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:INPP_mineria_con_petroleo a ae:Indicador ;
+    rdfs:label "INPP — mineria con petroleo"@es ;
+    ae:claveAPI "910500"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloquePrecios ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:INPP_mineria_sin_petroleo a ae:Indicador ;
+    rdfs:label "INPP — mineria sin petroleo"@es ;
+    ae:claveAPI "910499"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloquePrecios ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:IPC_bolsa a ae:Indicador ;
+    rdfs:label "Indice de Precios y Cotizaciones de la BMV (IPC)"@es ;
+    ae:claveAPI "SF43716"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueBursatil ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:Ingresos_tributarios_totales_GF_CG2_millones_pesos a ae:Indicador ;
+    rdfs:label "Ingreso total tributarios del Gobierno Federal (CG2)"@es ;
+    ae:claveAPI "SG10"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueGobierno ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:M1 a ae:Indicador ;
+    rdfs:label "Agregado monetario M1"@es ;
+    ae:claveAPI "SF311408"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueDineroCredito ;
+    ae:relacionadoCon ae:M2 ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:Mbono_tasa_fija_3y a ae:Indicador ;
+    rdfs:label "Bono gubernamental a tasa fija — rendimiento 3 anos"@es ;
+    ae:claveAPI "SF60640"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTasas ;
+    ae:relacionadoCon ae:Mbono_tasa_fija_5y ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:Noticias_economicas a ae:ConceptoNoticias ;
+    rdfs:label "Noticias economicas y financieras de Mexico (indice de sentimiento)"@es ;
+    ae:frecuencia "diaria"^^xsd:string ;
+    ae:fuente ae:Noticias ;
+    ae:relacionadoCon ae:Confianza_consumidor,
+        ae:Opinion_empresarial ;
+    ae:unidad "texto / indice de sentimiento"^^xsd:string .
+
+ae:Remesas_reales_INPC a ae:Indicador ;
+    rdfs:label "Remesas familiares deflactadas (reales, INPC)"@es ;
+    ae:claveAPI "SF106800"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueFinancierosExternos ;
+    ae:relacionadoCon ae:INPC ;
+    ae:unidad "millones de pesos reales"^^xsd:string .
+
+ae:Remuneracion_asalariados_total a ae:Indicador ;
+    rdfs:label "Remuneracion de asalariados — total"@es ;
+    ae:claveAPI "724014"^^xsd:string ;
+    ae:frecuencia "anual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueSalarios ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:SPEI_monto_total_pesos a ae:Indicador ;
+    rdfs:label "Monto total de transferencias SPEI"@es ;
+    ae:claveAPI "SF276064"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueFinancierosExternos ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:TC_FIX a ae:Indicador ;
+    rdfs:label "Tipo de cambio FIX (peso por dolar estadounidense)"@es ;
+    ae:claveAPI "SF43718"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTipoCambio ;
+    ae:relacionadoCon ae:EE_TC_pesos_dolar_cierre_año_t_mediana ;
+    ae:unidad "pesos por dolar"^^xsd:string .
+
+ae:Tasa_desocupacion a ae:Indicador ;
+    rdfs:label "Tasa de desocupacion nacional (ENOE)"@es ;
+    ae:claveAPI "444884"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:relacionadoCon ae:ENOE_ocupados_secundario,
+        ae:ENOE_ocupados_terciario ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:Tasa_objetivo a ae:Indicador ;
+    rdfs:label "Tasa de interes objetivo del Banco de Mexico"@es ;
+    ae:claveAPI "SF61745"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTasas ;
+    ae:relacionadoCon ae:CETES_28_dias,
+        ae:TIIE_28_dias ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:Valor_produccion_construccion a ae:Indicador ;
+    rdfs:label "Valor total de produccion — construccion"@es ;
+    ae:claveAPI "723135"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueVivienda ;
+    ae:relacionadoCon ae:Credito_vivienda_banca_comercial ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:Valor_produccion_edificacion a ae:Indicador ;
+    rdfs:label "Valor total de produccion — edificacion"@es ;
+    ae:claveAPI "720648"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueVivienda ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:claveAPI a rdf:Property ;
+    rdfs:label "Identificador publico de la serie en la API de origen"@es .
+
+ae:frecuencia a rdf:Property ;
+    rdfs:label "Periodicidad de la fuente"@es .
+
+ae:fuente a rdf:Property ;
+    rdfs:label "Fuente de la serie o concepto (INEGI | Banxico | Noticias)"@es .
+
+ae:perteneceABloque a rdf:Property ;
+    rdfs:label "Indicador pertenece a un bloque tematico"@es .
+
+ae:relacionadoCon a rdf:Property ;
+    rdfs:label "Relacion economica entre indicadores (arista para OntoRank)"@es .
+
+ae:unidad a rdf:Property ;
+    rdfs:label "Unidad de medida o descripcion corta"@es .
+
+ae:BloqueBursatil a ae:Bloque ;
+    rdfs:label "Mercado bursatil"@es .
+
+ae:BloqueGobierno a ae:Bloque ;
+    rdfs:label "Sector gobierno"@es .
+
+ae:CETES_182_dias a ae:Indicador ;
+    rdfs:label "CETES a 182 dias (rendimiento en subasta)"@es ;
+    ae:claveAPI "SF60635"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTasas ;
+    ae:relacionadoCon ae:CETES_364_dias ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:CETES_28_dias a ae:Indicador ;
+    rdfs:label "CETES a 28 dias (rendimiento en subasta)"@es ;
+    ae:claveAPI "SF60633"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTasas ;
+    ae:relacionadoCon ae:CETES_91_dias ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:CETES_364_dias a ae:Indicador ;
+    rdfs:label "CETES a 364 dias (rendimiento en subasta)"@es ;
+    ae:claveAPI "SF60636"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTasas ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:CETES_91_dias a ae:Indicador ;
+    rdfs:label "CETES a 91 dias (rendimiento en subasta)"@es ;
+    ae:claveAPI "SF60634"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTasas ;
+    ae:relacionadoCon ae:CETES_182_dias ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:Confianza_consumidor a ae:Indicador ;
+    rdfs:label "Indicador de confianza del consumidor (ENCO)"@es ;
+    ae:claveAPI "454186"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueExpectativas ;
+    ae:relacionadoCon ae:Consumo_privado,
+        ae:EE_inflacion_general_prox12m_mediana ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:Consumo_privado a ae:Indicador ;
+    rdfs:label "Indicador mensual del consumo privado en el mercado interior"@es ;
+    ae:claveAPI "740987"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueConsumo ;
+    ae:relacionadoCon ae:Ventas_por_menor ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:Credito_consumo a ae:Indicador ;
+    rdfs:label "Cartera de credito al consumo"@es ;
+    ae:claveAPI "SF235705"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueDineroCredito ;
+    ae:relacionadoCon ae:Cuentas_tarjeta_credito ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:Credito_empresas_actividad_empresarial a ae:Indicador ;
+    rdfs:label "Cartera de credito a empresas (actividad empresarial)"@es ;
+    ae:claveAPI "SF235708"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueDineroCredito ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:Credito_vivienda_banca_comercial a ae:Indicador ;
+    rdfs:label "Cartera de credito a la vivienda — banca comercial"@es ;
+    ae:claveAPI "SF235707"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueVivienda ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:Cuentas_tarjeta_credito a ae:Indicador ;
+    rdfs:label "Cuentas o contratos con tarjeta de credito"@es ;
+    ae:claveAPI "SF42525"^^xsd:string ;
+    ae:frecuencia "trimestral"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueFinancierosExternos ;
+    ae:unidad "cuentas"^^xsd:string .
+
+ae:EE_PIB_real_anual_mediana_año_t a ae:Indicador ;
+    rdfs:label "Expectativa de variacion del PIB real anual (mediana; ano en curso)"@es ;
+    ae:claveAPI "SR14448"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueExpectativas ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:EE_TC_pesos_dolar_cierre_año_t_mediana a ae:Indicador ;
+    rdfs:label "Expectativa de tipo de cambio al cierre del ano (mediana)"@es ;
+    ae:claveAPI "SR14770"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTipoCambio ;
+    ae:unidad "pesos por dolar"^^xsd:string .
+
+ae:EMIM_remuneraciones_medias_reales a ae:Indicador ;
+    rdfs:label "Remuneraciones medias reales — total (EMIM)"@es ;
+    ae:claveAPI "702671"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueSalarios ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:EMIM_volumen_fisico_produccion_total a ae:Indicador ;
+    rdfs:label "EMIM — volumen fisico de produccion (total)"@es ;
+    ae:claveAPI "910468"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueProduccion ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:ENEC_valor_produccion_subsector_236 a ae:Indicador ;
+    rdfs:label "Valor de produccion de edificacion — subsector 236 (ENEC)"@es ;
+    ae:claveAPI "722254"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueVivienda ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:ENEC_valor_produccion_subsector_237 a ae:Indicador ;
+    rdfs:label "Valor de produccion de ingenieria civil — subsector 237 (ENEC)"@es ;
+    ae:claveAPI "722255"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueVivienda ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:ENOE_ocupados_secundario a ae:Indicador ;
+    rdfs:label "Ocupados en el sector secundario (ENOE)"@es ;
+    ae:claveAPI "668923"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:unidad "personas"^^xsd:string .
+
+ae:ENOE_ocupados_terciario a ae:Indicador ;
+    rdfs:label "Ocupados en el sector terciario (ENOE)"@es ;
+    ae:claveAPI "668927"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:unidad "personas"^^xsd:string .
+
+ae:IGAE_Primarias a ae:Indicador ;
+    rdfs:label "IGAE — actividades primarias"@es ;
+    ae:claveAPI "737226"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueProduccion ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:IGAE_Secundarias a ae:Indicador ;
+    rdfs:label "IGAE — actividades secundarias"@es ;
+    ae:claveAPI "737233"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueProduccion ;
+    ae:relacionadoCon ae:Produccion_industrial ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:IGAE_Terciarias a ae:Indicador ;
+    rdfs:label "IGAE — actividades terciarias"@es ;
+    ae:claveAPI "737268"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueProduccion ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:IGREMSE a ae:Indicador ;
+    rdfs:label "Indice global de remuneraciones medias en establecimientos (IGREMSE)"@es ;
+    ae:claveAPI "702134"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:IGRESE a ae:Indicador ;
+    rdfs:label "Indice global de remuneraciones en establecimientos (IGRESE)"@es ;
+    ae:claveAPI "702127"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueEmpleo ;
+    ae:relacionadoCon ae:IGREMSE ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:INPC a ae:Indicador ;
+    rdfs:label "Indice Nacional de Precios al Consumidor (INPC)"@es ;
+    ae:claveAPI "910392"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloquePrecios ;
+    ae:relacionadoCon ae:EE_inflacion_general_prox12m_mediana,
+        ae:INPC_subyacente,
+        ae:Precios_productor ;
+    ae:unidad "indice"^^xsd:string ;
+    skos:altLabel "aumento de precios"@es,
+        "carestia"@es,
+        "costo de vida"@es,
+        "inflacion"@es,
+        "inflacion al consumidor"@es,
+        "inflacion anual"@es,
+        "inflacion general"@es,
+        "precios al consumidor"@es,
+        "tasa de inflacion"@es .
+
+ae:INPC_subyacente a ae:Indicador ;
+    rdfs:label "INPC subyacente"@es ;
+    ae:claveAPI "334452"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloquePrecios ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:INPP_sin_petroleo_servicios a ae:Indicador ;
+    rdfs:label "INPP — sin petroleo y servicios"@es ;
+    ae:claveAPI "910491"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloquePrecios ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:Importaciones_bienes_capital a ae:Indicador ;
+    rdfs:label "Importaciones de bienes de capital"@es ;
+    ae:claveAPI "87530"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueFinancierosExternos ;
+    ae:unidad "millones de dolares"^^xsd:string .
+
+ae:M2 a ae:Indicador ;
+    rdfs:label "Agregado monetario M2"@es ;
+    ae:claveAPI "SF311418"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueDineroCredito ;
+    ae:relacionadoCon ae:M3 ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:M3 a ae:Indicador ;
+    rdfs:label "Agregado monetario M3"@es ;
+    ae:claveAPI "SF311433"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueDineroCredito ;
+    ae:relacionadoCon ae:M4 ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:M4 a ae:Indicador ;
+    rdfs:label "Agregado monetario M4"@es ;
+    ae:claveAPI "SF311438"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueDineroCredito ;
+    ae:unidad "millones de pesos"^^xsd:string .
+
+ae:Mbono_tasa_fija_10y a ae:Indicador ;
+    rdfs:label "Bono gubernamental a tasa fija — rendimiento 10 anos"@es ;
+    ae:claveAPI "SF60643"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTasas ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:Mbono_tasa_fija_5y a ae:Indicador ;
+    rdfs:label "Bono gubernamental a tasa fija — rendimiento 5 anos"@es ;
+    ae:claveAPI "SF60641"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTasas ;
+    ae:relacionadoCon ae:Mbono_tasa_fija_10y ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:Noticias a ae:Fuente ;
+    rdfs:label "Noticias economicas y financieras (Google Sheets / recoleccion)"@es .
+
+ae:Opinion_empresarial a ae:Indicador ;
+    rdfs:label "Indicador global de opinion empresarial (IGOE / EMOE)"@es ;
+    ae:claveAPI "910454"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueExpectativas ;
+    ae:relacionadoCon ae:EE_PIB_real_anual_mediana_año_t ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:Precios_productor a ae:Indicador ;
+    rdfs:label "Indice de precios al productor (serie general)"@es ;
+    ae:claveAPI "334361"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloquePrecios ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:Produccion_industrial a ae:Indicador ;
+    rdfs:label "Indice de produccion industrial"@es ;
+    ae:claveAPI "736885"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueProduccion ;
+    ae:relacionadoCon ae:EMIM_volumen_fisico_produccion_total ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:TIIE_28_dias a ae:Indicador ;
+    rdfs:label "TIIE a 28 dias"@es ;
+    ae:claveAPI "SF43783"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueTasas ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:Ventas_por_menor a ae:Indicador ;
+    rdfs:label "Ventas al por menor (comercio minorista)"@es ;
+    ae:claveAPI "718942"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueConsumo ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:BloqueConsumo a ae:Bloque ;
+    rdfs:label "Consumo"@es .
+
+ae:BloqueSalarios a ae:Bloque ;
+    rdfs:label "Salarios y costos laborales"@es .
+
+ae:BloqueTipoCambio a ae:Bloque ;
+    rdfs:label "Tipo de cambio"@es .
+
+ae:Coincidente_SIC a ae:Indicador ;
+    rdfs:label "Indicador coincidente del SIC"@es ;
+    ae:claveAPI "436139"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:INEGI ;
+    ae:perteneceABloque ae:BloqueFinancierosExternos ;
+    ae:unidad "indice"^^xsd:string .
+
+ae:EE_inflacion_general_prox12m_mediana a ae:Indicador ;
+    rdfs:label "Expectativa de inflacion general a 12 meses (mediana)"@es ;
+    ae:claveAPI "SR14195"^^xsd:string ;
+    ae:frecuencia "mensual"^^xsd:string ;
+    ae:fuente ae:Banxico ;
+    ae:perteneceABloque ae:BloqueExpectativas ;
+    ae:unidad "porcentaje"^^xsd:string .
+
+ae:BloqueExpectativas a ae:Bloque ;
+    rdfs:label "Expectativas y sentimiento"@es .
+
+ae:BloqueProduccion a ae:Bloque ;
+    rdfs:label "Produccion e ingreso real"@es .
+
+ae:BloqueVivienda a ae:Bloque ;
+    rdfs:label "Vivienda y Construccion"@es .
+
+ae:BloqueDineroCredito a ae:Bloque ;
+    rdfs:label "Dinero y credito"@es .
+
+ae:BloqueFinancierosExternos a ae:Bloque ;
+    rdfs:label "Indicadores financieros y externos"@es .
+
+ae:BloquePrecios a ae:Bloque ;
+    rdfs:label "Precios"@es .
+
+ae:BloqueTasas a ae:Bloque ;
+    rdfs:label "Tasas de interes"@es .
+
+ae:BloqueEmpleo a ae:Bloque ;
+    rdfs:label "Empleo y mercado laboral"@es .
+
+ae:Banxico a ae:Fuente ;
+    rdfs:label "Banco de Mexico (SIE)"@es .
+
+ae:INEGI a ae:Fuente ;
+    rdfs:label "Instituto Nacional de Estadistica y Geografia"@es .

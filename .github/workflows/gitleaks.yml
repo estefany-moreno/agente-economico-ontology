@@ -1,0 +1,24 @@
+# Red de seguridad contra secretos accidentales en git (plan seccion 6).
+# Corre gitleaks en cada push y pull request.
+name: gitleaks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  scan:
+    name: Detectar secretos
+    runs-on: ubuntu-latest
+    steps:
+      # Historial completo: detecta secretos tambien en commits previos
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Escaneo con gitleaks; falla el job si encuentra un secreto
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
